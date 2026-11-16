@@ -11,7 +11,6 @@ export const site = {
   lastName: "Ude",
   title: "Senior Mobile Engineer",
   url: "https://[YOUR-DOMAIN].dev",
-  location: "Enugu, Nigeria · GMT+1",
   status: "Open to remote roles and contracts",
 
   // Drop your avatar in /public (e.g. /public/avatar.png) and set this to "/avatar.png".
@@ -25,10 +24,10 @@ export const site = {
   headline:
     "I build mobile products end to end, the kind most teams need five people for.",
   intro:
-    "Six years in production Flutter, plus native iOS and modern web. I take a product from the first Figma frame to a live app with a real backend, real payments and real users. 10+ apps shipped.",
+    "4+ years in production Flutter, plus native iOS and modern web. I take a product from the first Figma frame to a live app with a real backend, real payments and real users. 10+ apps shipped.",
 
   stats: [
-    { value: "6+", label: "years in production" },
+    { value: "4+", label: "years in production" },
     { value: "10+", label: "apps shipped" },
     //{ value: "1", label: "person, whole stack" },
   ],
@@ -53,9 +52,6 @@ export const stack: { group: string; items: string[] }[] = [
   },
 ];
 
-// The faded row of tool names under the intro.
-export const tools = ["Flutter", "Swift", "React", "Next.js", "TypeScript", "Firebase", "Supabase", "Figma", "Claude"];
-
 // Language dot colours for project cards.
 export const langColors: Record<string, string> = {
   Flutter: "#1fb8b0",
@@ -64,6 +60,8 @@ export const langColors: Record<string, string> = {
   React: "#5aa7e0",
   "Next.js": "#e8edea",
   SwiftUI: "#f05138",
+  Python: "#4b8bbe",
+  JavaScript: "#e9d44d",
 };
 
 export type Project = {
@@ -92,7 +90,7 @@ export const projects: Project[] = [
     caseStudy: true,
     featured: true,
     image: "/work/rev-games.jpg",
-    liveUrl: "https://rev-games.web.app/",
+    liveUrl: "https://app.revgames.online",
   },
   {
     slug: "hattrick",
@@ -107,18 +105,20 @@ export const projects: Project[] = [
   {
     slug: "dscvr",
     name: "dscvr",
-    badge: "AI",
+    badge: "Live",
     description:
-      "AI research library. Pinda AI assistant on the Claude API, multi-model fact-checking, Figma-style sharing with view, fork and comment.",
-    langs: ["Flutter", "Claude API"],
-    extra: "Firebase",
+      "AI research library for students, researchers and professionals. One search across every free source, Pinda AI on the Claude API, law libraries for 24 countries.",
+    langs: ["Flutter", "Flask", "Claude API"],
+    extra: "Firebase · Railway",
+    caseStudy: true,
     image: "/work/dscvr.jpg",
+    liveUrl: "https://askpinda.com",
   },
   {
     slug: "excelsior-legal",
     name: "excelsior-legal",
     badge: "Web",
-    description: "Website for Excelsior Pratique Legale, a law practice. [ONE LINE ON THE RESULT]",
+    description: "Website for Excelsior Pratique Legale, a law firm. Practice areas, team and contact, built to load fast on any phone.",
     langs: ["React"],
     image: "/work/excelsior.jpg",
   },
@@ -133,9 +133,21 @@ export const services = [
   { title: "Monthly retainer", price: "from $400/mo", image: "/services/retainer.svg" as string | null },
 ];
 
+// Built from commit history across github.com/anthony-devs. Newest first.
 export const shipLog = [
-  { date: "Oct 2026", title: "Rev Games", note: "launched: 10 games, live wallet, admin-verified payouts" },
-  { date: "Jun 2026", title: "DSCVR", note: "MVP: library, materials and Pinda AI chat" },
-  { date: "Aug 2023", title: "Hattrick", note: "load time down from 900ms to 180ms" },
-  { date: "December 2024", title: "Crowdlens", note: "Design Concept" },
+  { date: "Nov 2026", title: "DSCVR", note: "launched at askpinda.com: new landing site, shared-link pages, link previews, daily alerts" },
+  { date: "Nov 2026", title: "DSCVR", note: "law libraries for 24 countries, guided tours on every page, built-in PDF reader" },
+  { date: "Nov 2026", title: "DSCVR", note: "Pinda the pangolin: new brand, logo and app icons" },
+  { date: "Nov 2026", title: "DSCVR", note: "paid plans with usage budgets, admin dashboard, developer console, authenticator sign-in for admins" },
+  { date: "Nov 2026", title: "Rev Games", note: "full redesign: illustrated arcade art, Chip the mascot, rebuilt crash game" },
+  { date: "Oct 2026", title: "DSCVR", note: "sharing with view, fork and comment, Parliament fact-check, custom UI kit with spring motion" },
+  { date: "Oct 2026", title: "Rev Games", note: "v1.0.3 live as a PWA; game server split into its own private repo" },
+  { date: "Oct 2026", title: "Rev Games", note: "round limits with paid top-ups, live odds tuning, admin dashboard" },
+  { date: "Oct 2026", title: "Rev Games", note: "brief to first build in a week: auth, wallet, slots, crash game" },
+  { date: "Jan 2026", title: "Anonymous", note: "anonymous social app: Flutter client and Flask REST API" },
+  { date: "May 2025", title: "Period Flow", note: "offline-first period tracker with local sync on Hive" },
+  { date: "May 2024", title: "Sports Prediction", note: "football match outcome predictor on live data in Python" },
+  { date: "Apr 2024", title: "Hattrick", note: "third full redesign; load time down from 900ms to 180ms" },
+  { date: "Nov 2023", title: "Hattrick", note: "coin purchases, profiles, super quiz; server migration" },
+  { date: "Sep 2023", title: "Hattrick", note: "first commit: sign-up, leaderboards, live quizzes" },
 ];

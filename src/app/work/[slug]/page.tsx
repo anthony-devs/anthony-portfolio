@@ -66,7 +66,7 @@ export default async function CaseStudyPage({ params }: Props) {
               className="press flex w-fit min-h-11 items-center gap-2.5 rounded-full bg-accent px-5 text-[15px] font-semibold text-ink! hover:brightness-110"
             >
               <span aria-hidden="true" className="size-2 rounded-full bg-ink" />
-              Open the live app
+              {cs.liveLabel ?? "Open the live app"}
             </a>
           )}
         </section>
@@ -150,6 +150,7 @@ export default async function CaseStudyPage({ params }: Props) {
         </section>
 
         {/* Screens */}
+        {cs.screens.length > 0 && (
         <section aria-labelledby="shots-h" className="flex flex-col gap-5">
           <H2 id="shots-h">Inside the app</H2>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,260px))] gap-4">
@@ -166,6 +167,7 @@ export default async function CaseStudyPage({ params }: Props) {
             ))}
           </div>
         </section>
+        )}
 
         {/* Results */}
         <section aria-labelledby="res-h" className="flex flex-col gap-5">

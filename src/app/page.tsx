@@ -1,11 +1,14 @@
-import { ProjectCard, ServiceCard } from "@/components/cards";
+import { ProjectCard, RepoCard, ServiceCard } from "@/components/cards";
 import { Contact } from "@/components/contact";
 import { Footer, Nav } from "@/components/nav";
 import { Sidebar } from "@/components/sidebar";
 import { SectionHeading } from "@/components/ui";
-import { projects, services, shipLog, site, tools } from "@/content/site";
+import { getRepos } from "@/content/github";
+import { projects, services, shipLog, site } from "@/content/site";
 
-export default function Home() {
+export default async function Home() {
+  const repos = await getRepos();
+
   return (
     <>
       <Nav />
@@ -36,14 +39,6 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div
-                aria-label="Tools I use"
-                className="flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-line pt-4 text-xl font-semibold text-faint"
-              >
-                {tools.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
-              </div>
             </div>
           </section>
 
@@ -52,7 +47,7 @@ export default function Home() {
             <SectionHeading
               id="work-h"
               aside={
-                <a href={site.links.github} className="text-[15px]">
+                <a href={repos.length ? "#projects" : site.links.github} className="text-[15px]">
                   All projects
                 </a>
               }
@@ -65,6 +60,27 @@ export default function Home() {
               ))}
             </div>
           </section>
+
+          {/* All projects, from GitHub */}
+          {repos.length > 0 && (
+            <section id="projects" aria-labelledby="repos-h" className="flex scroll-mt-6 flex-col gap-[18px]">
+              <SectionHeading
+                id="repos-h"
+                aside={
+                  <a href={site.links.github} className="text-[15px]">
+                    View on GitHub
+                  </a>
+                }
+              >
+                more projects
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {repos.map((r) => (
+                  <RepoCard key={r.name} r={r} />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Services */}
           <section id="services" aria-labelledby="svc-h" className="flex scroll-mt-6 flex-col gap-[18px]">
@@ -82,7 +98,7 @@ export default function Home() {
             <ol className="m-0 list-none overflow-hidden rounded-[14px] border border-line bg-panel p-0">
               {shipLog.map((e, i) => (
                 <li
-                  key={e.title}
+                  key={`${e.date}-${i}`}
                   className={`flex flex-wrap items-baseline gap-x-5 gap-y-2 px-5 py-4 ${
                     i < shipLog.length - 1 ? "border-b border-line" : ""
                   }`}

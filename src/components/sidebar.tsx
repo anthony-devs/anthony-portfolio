@@ -1,5 +1,5 @@
 import { site, stack } from "@/content/site";
-import { GitHub, LinkedIn, Pin } from "./icons";
+import { GitHub, LinkedIn } from "./icons";
 import { Chip } from "./ui";
 
 export function Sidebar() {
@@ -51,10 +51,6 @@ export function Sidebar() {
       </div>
 
       <ul className="m-0 flex list-none flex-col gap-2.5 border-t border-line p-0 pt-4 text-sm text-soft">
-        <li className="flex items-center gap-2.5">
-          <Pin className="text-muted" />
-          {site.location}
-        </li>
         <li className="flex items-center gap-2.5">
           <GitHub className="text-muted" />
           <a href={site.links.github}>{site.links.github.replace("https://", "")}</a>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Repo } from "@/content/github";
 import { langColors, type Project } from "@/content/site";
 import { ChevronRight } from "./icons";
 
@@ -84,5 +85,33 @@ export function ServiceCard({ title, price, image }: { title: string; price: str
         <ChevronRight size={14} strokeWidth={3} />
       </span>
     </Link>
+  );
+}
+
+export function RepoCard({ r }: { r: Repo }) {
+  return (
+    <article className="press relative flex flex-col gap-2.5 rounded-[14px] border border-line bg-panel p-5 hover:border-accent">
+      <div className="flex items-center justify-between gap-2">
+        <a
+          href={r.url}
+          target="_blank"
+          rel="noopener"
+          className="font-mono text-[15px] font-semibold text-accent-text! after:absolute after:inset-0 after:content-['']"
+        >
+          {r.name}
+        </a>
+        <span className="font-mono text-xs text-muted">{r.year}</span>
+      </div>
+      {r.description && <p className="m-0 grow text-[14px] font-light text-soft">{r.description}</p>}
+      <div className="flex flex-wrap items-center gap-4 text-xs text-muted">
+        {r.lang && (
+          <span className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: langColors[r.lang] ?? "#8e9a94" }} />
+            {r.lang}
+          </span>
+        )}
+        {r.stars > 0 && <span>★ {r.stars}</span>}
+      </div>
+    </article>
   );
 }
