@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Endgame 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: loud, playful, arcade season-pass — a game you want to finish
+IDEA: a sticker quest board / battle pass for the last 42 days of 2026
+PICTURE: the working quest board itself, with a giant countdown sticker + XP bar
+COLOUR and TYPE: lemon yellow ground, black ink, hard sticker shadows, six zone colours; Lilita One + Inter
+LAYOUT: header strip with countdown + XP, zone filters, then zone cards in a responsive grid
+*/
+:root{color-scheme:light dark;
+--bg:light-dark(#ffd84d,#16140b);--ink:light-dark(#111,#fff6d6);--card:light-dark(#fffdf5,#24210f);
+--line:light-dark(#111,#fff6d6);--mute:light-dark(#4a4430,#c9bf98);--sh:light-dark(#111,#000);
+--done:light-dark(#1fb36b,#2ee08a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(20px,3.5vw,48px) max(4vw,14px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,.big{font-family:"Lilita One",Impact,sans-serif;font-weight:400;letter-spacing:.3px}
+h1{font-size:clamp(36px,6vw,52px);line-height:1.05;margin:0;text-wrap:balance}
+.sub{margin:8px 0 0;color:var(--mute);max-width:60ch}
+.top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.stk{background:var(--card);border:2.5px solid var(--line);border-radius:18px;box-shadow:5px 5px 0 var(--sh)}
+.hud{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;padding:16px 18px;align-items:center}
+.cd{background:#ff4d2e;color:#fff;border:2.5px solid var(--line);border-radius:16px;padding:8px 14px;text-align:center;transform:rotate(-3deg)}
+.cd .big{font-size:clamp(40px,7vw,56px);line-height:1;display:block}
+.cd small{font-weight:700;font-size:13px}
+.lvl{font-weight:700;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.lvl b{font-family:"Lilita One";font-weight:400;font-size:22px}
+.bar{height:22px;border:2.5px solid var(--line);border-radius:99px;overflow:hidden;margin:8px 0 6px;background:light-dark(#fff3b0,#3a3417)}
+.bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#1fb36b 0 12px,#18a05f 12px 24px);transition:width .5s cubic-bezier(.3,1.6,.5,1)}
+.meta{font-size:14px;color:var(--mute)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+button{font:inherit;font-weight:700;cursor:pointer;min-height:44px;padding:0 16px;border:2.5px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);box-shadow:3px 3px 0 var(--sh);transition:transform .08s}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--sh)}
+button:focus-visible,input:focus-visible+span{outline:3px solid #2f5bff;outline-offset:2px}
+button.on{background:var(--ink);color:var(--bg)}
+.go{background:#ff4fa3;color:#fff}
+.pick{margin-top:14px;padding:14px 18px;display:none;font-weight:600}
+.pick.show{display:block;animation:pop .35s cubic-bezier(.3,1.7,.5,1)}
+.pick span{font-family:"Lilita One";font-weight:400;font-size:13px;display:block;color:#ff4fa3}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:22px;align-items:start}
+.zone{padding:0 0 6px;overflow:hidden}
+.zh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:2.5px solid var(--line);color:#fff}
+.zh h2{margin:0;font-size:24px;line-height:1.1}
+.zh em{font-style:normal;font-weight:700;font-size:13px;background:rgba(0,0,0,.25);padding:3px 10px;border-radius:99px;white-space:nowrap}
+ul{list-style:none;margin:0;padding:4px 8px}
+li label{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 8px;border-radius:12px;cursor:pointer}
+li label:hover{background:light-dark(#fff6c9,#2f2b14)}
+li input{position:absolute;opacity:0;width:1px;height:1px}
+li .box{width:26px;height:26px;border:2.5px solid var(--line);border-radius:8px;display:grid;place-items:center;margin-top:1px;background:var(--card)}
+li .box svg{width:16px;height:16px;opacity:0;transform:scale(.3);transition:.2s cubic-bezier(.3,1.8,.5,1)}
+li input:checked+.box{background:var(--done)}
+li input:checked+.box svg{opacity:1;transform:scale(1)}
+li .t{font-weight:600;line-height:1.35}
+li .d{display:block;font-weight:400;font-size:14px;color:var(--mute);margin-top:2px}
+li input:checked~.t{text-decoration:line-through 2px;opacity:.5}
+.xp{font-size:12px;font-weight:700;border:2px solid var(--line);border-radius:99px;padding:1px 8px;white-space:nowrap;margin-top:2px}
+.xp.boss{background:#111;color:#ffd84d;border-color:#111}
+.foot{text-align:center;color:var(--mute);font-size:14px;padding-bottom:40px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:99px;font-weight:700;transition:transform .3s cubic-bezier(.3,1.6,.5,1);z-index:9}
+.toast.show{transform:translate(-50%,0)}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+@media(max-width:760px){.top{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:420px){.hud{grid-template-columns:minmax(0,1fr)}.cd{justify-self:start}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="band"><div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Endgame 2026: the last-quest board</h1>
+      <p class="sub">Everything worth finishing before the year runs out — get paid, launch, get hired, build the brand, and live a little. Tick quests to earn XP. Boss quests are worth 50.</p>
+    </div>
+    <div class="stk hud">
+      <div class="cd"><span class="big" id="days">42</span><small>days left</small></div>
+      <div>
+        <div class="lvl"><b id="lvl">Level 1</b><span id="xpt">0 / 0 XP</span></div>
+        <div class="bar"><i id="fill"></i></div>
+        <div class="meta" id="cnt">0 of 0 quests done</div>
+      </div>
+    </div>
+  </div>
+  <div class="tools" id="filters"></div>
+  <div class="tools">
+    <button class="go" id="rand">Give me a random quest</button>
+    <button id="copy">Copy for Apple Notes</button>
+    <button id="reset">Reset ticks</button>
+  </div>
+  <div class="stk pick" id="pick"></div>
+</div></div>
+
+<div class="band" style="padding-top:0"><div class="wrap grid" id="grid"></div></div>
+<p class="foot">Ticks save in this browser. Deadline: 31 December 2026, 11:59pm.</p>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const Z=[
+ {k:'rev',n:'REV GAMES: close it out',c:'#ff4d2e'},
+ {k:'pinda',n:'DSCVR × AskPinda launch',c:'#2f5bff'},
+ {k:'job',n:'Get hired / get clients',c:'#ff4fa3'},
+ {k:'brand',n:'Build the brand',c:'#111'},
+ {k:'build',n:'Side quests & skills',c:'#7a3cff'},
+ {k:'money',n:'Money & admin',c:'#1fb36b'},
+ {k:'life',n:'Life (yes, this counts)',c:'#ff8a00'}
+];
+const T=[
+['rev','Collect the 70% payment from Mr Emmanuel','Work is done — send a clear invoice with a pay-by date.',50],
+['rev','Get the final 30% agreed in writing','Amount, date and what triggers it. No more back-and-forth.',25],
+['rev','Finish the Rev Games company page on Wellfound','',10],
+['rev','Write a handoff doc for the owner','Payment provider setup, Youverify KYC, Railway, rev_server access, admin panel payout checks.',25],
+['rev','Confirm revgames.online and app.revgames.online are both live','',10],
+['rev','Record 3 clips: Chip big-win, the new crash game, Plinko','Raw material for IG/X posts.',10],
+['rev','Add Rev Games as a case study everywhere','Upwork, LinkedIn, Wellfound and the portfolio site.',25],
+['rev','Pitch Mayowa E on the follow-up work','Landing page, promotion, server scaling, updates and redesigns.',25],
+
+['pinda','Ship DSCVR to production on app.askpinda.com','',50],
+['pinda','Launch "DSCVR by AskPinda" on Product Hunt','Gallery images, tagline, maker comment, launch-day plan.',50],
+['pinda','Build the DSCVR Chrome extension MVP','Save any page into your library in one click.',50],
+['pinda','Switch Paystack plans live and do one real test payment','Student Plus, Research Plus, Max.',25],
+['pinda','Finish the admin + developer dashboard','Modelled on the REV ones.',25],
+['pinda','Finish the AskPinda company page on Wellfound','',10],
+['pinda','Get Jamor’s collab post live on X','',10],
+['pinda','Put law reports in front of your uncle and 5 lawyers','Real feedback from the professionals you want.',25],
+['pinda','Get the first 100 users','',50],
+['pinda','Get the first paying user','',50],
+['pinda','Decide the money route: solo, YC, angels or sell','Pick one by 31 Dec so 2027 starts focused.',25],
+['pinda','Post on x.com/askpinda every week','',10],
+['pinda','Submit DSCVR to the App Store and Play Store','',25],
+
+['job','Make every resume say 5+ years and 60% faster load times','The copies in your Drive still say 4+ / 6+ years and 35%.',10],
+['job','Keep one master resume, archive the old Drive versions','',10],
+['job','Apply: CFI Financial Group — Senior Mobile Developer (Flutter)','Sitting in your inbox as "actively recruiting".',10],
+['job','Apply: Yochana — Principal Mobile Engineer','Also flagged as actively recruiting.',10],
+['job','Apply: Joblet-AI — Senior Mobile Engineer (Remote)','',10],
+['job','Send 5 tailored applications every week','',25],
+['job','Add 2 more Upwork Project Catalog projects','',25],
+['job','Send 10 Upwork proposals a week with the "I’ve built…" opener','',25],
+['job','Reconnect with Funmi (Climb) on WhatsApp','Show her Rev Games and DSCVR.',10],
+['job','Land 1 remote role or paid contract before the year ends','',50],
+
+['brand','Put Rev Games and DSCVR on the portfolio site','',25],
+['brand','Give the portfolio a real domain','Swap the railway.app URL.',10],
+['brand','Publish 2 Medium articles','E.g. server-driven game catalogs; how Pinda AI works.',25],
+['brand','Post 2× a week on IG and X','You, the builder — not just the apps.',25],
+['brand','Refresh the LinkedIn About','Minimal, 5+ years, no CTA.',10],
+['brand','Pin your best repos on GitHub and clean their READMEs','',10],
+['brand','Post "What I shipped in 2026" on 31 Dec','Direct. No struggle-story opener.',25],
+
+['build','Kick off the Acrylic rebuild','The Nov 2026 rebuild plan is waiting in Notion.',25],
+['build','Ship one small crypto / on-chain project','Your first step into crypto dev.',50],
+['build','Build a native SwiftUI mini-app','Backs up the "Flutter + native iOS" claim.',25],
+['build','Turn one Rev/DSCVR component into an open-source package','',25],
+
+['money','Start the 50/25/25 split with the first Rev payment','From your Financial Freedom page in Notion.',25],
+['money','Audit subscriptions','Netflix, Spotify, Google One, Zoho Workplace, Railway — keep only what earns its place.',10],
+['money','Check renewals for revgames.online and askpinda.com','',10],
+['money','Back up rev_game_mvp, DSCVR and the portfolio','Push everything to GitHub plus one offline copy.',10],
+['money','Write down what you earned and spent in 2026','So 2027 targets are real numbers.',10],
+
+['life','Plan a proper holiday date','',25],
+['life','Christmas gifts for family (and your uncle)','',10],
+['life','Take one full offline day — no laptop','',10],
+['life','Move your body 3× a week till 31 Dec','',25],
+['life','Finish one book','',10],
+['life','Fix your sleep: no coding past 2am for a week','You sent this at midnight.',10],
+['life','Write your 2027 goals list on 31 Dec','Make it look fun, obviously.',10]
+];
+const KEY='endgame26';let done={};
+try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}};
+let filt='all';
+const $=id=>document.getElementById(id);
+const tick='<svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  $('filters').innerHTML=[{k:'all',n:'All zones'}].concat(Z).map(z=>`<button data-f="${z.k}" class="${filt===z.k?'on':''}">${z.k==='all'?z.n:z.n.split(':')[0].split(' (')[0]}</button>`).join('');
+  $('grid').innerHTML=Z.filter(z=>filt==='all'||filt===z.k).map(z=>{
+    const items=T.map((t,i)=>[t,i]).filter(([t])=>t[0]===z.k);
+    const n=items.filter(([,i])=>done[i]).length;
+    return `<section class="stk zone"><div class="zh" style="background:${z.c}"><h2>${z.n}</h2><em id="zc-${z.k}">${n}/${items.length}</em></div><ul>${items.map(([t,i])=>`<li><label><input type="checkbox" data-i="${i}" ${done[i]?'checked':''}><span class="box">${tick}</span><span class="t">${esc(t[1])}${t[2]?`<span class="d">${esc(t[2])}</span>`:''}</span><span class="xp ${t[3]>=50?'boss':''}">${t[3]>=50?'BOSS ':''}+${t[3]}</span></label></li>`).join('')}</ul></section>`}).join('');
+  stats();
+}
+function stats(){
+  const tot=T.reduce((a,t)=>a+t[3],0),got=T.reduce((a,t,i)=>a+(done[i]?t[3]:0),0);
+  const n=T.filter((t,i)=>done[i]).length;
+  $('fill').style.width=(got/tot*100)+'%';
+  $('xpt').textContent=got+' / '+tot+' XP';
+  $('lvl').textContent='Level '+(1+Math.floor(got/150));
+  $('cnt').textContent=n+' of '+T.length+' quests done';
+  Z.forEach(z=>{const el=$('zc-'+z.k);if(el){const it=T.map((t,i)=>i).filter(i=>T[i][0]===z.k);el.textContent=it.filter(i=>done[i]).length+'/'+it.length}});
+  const end=new Date(2027,0,1),now=new Date();
+  $('days').textContent=Math.max(0,Math.ceil((end-now)/864e5));
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),1800)}
+document.addEventListener('change',e=>{const i=e.target.dataset.i;if(i==null)return;
+  if(e.target.checked){done[i]=1;toast(T[i][3]>=50?'Boss down! +'+T[i][3]+' XP':'+'+T[i][3]+' XP')}else delete done[i];
+  save();stats()});
+$('filters').addEventListener('click',e=>{const f=e.target.dataset.f;if(f){filt=f;render()}});
+$('rand').addEventListener('click',()=>{
+  const open=T.map((t,i)=>i).filter(i=>!done[i]);const p=$('pick');
+  if(!open.length){p.innerHTML='<span>All clear</span>Every quest done. Go write 2027.';}
+  else{const i=open[Math.floor(Math.random()*open.length)],z=Z.find(z=>z.k===T[i][0]);
+  p.innerHTML=`<span style="color:${z.c}">${esc(z.n)} · +${T[i][3]} XP</span>${esc(T[i][1])}`;}
+  p.classList.remove('show');void p.offsetWidth;p.classList.add('show')});
+$('copy').addEventListener('click',async()=>{
+  const txt='ENDGAME 2026\n\n'+Z.map(z=>z.n.toUpperCase()+'\n'+T.map((t,i)=>[t,i]).filter(([t])=>t[0]===z.k).map(([t,i])=>(done[i]?'✓ ':'○ ')+t[1]).join('\n')).join('\n\n');
+  try{await navigator.clipboard.writeText(txt);toast('Copied — paste into Apple Notes')}catch(e){toast('Copy blocked by the browser')}});
+let armed=0;
+$('reset').addEventListener('click',e=>{if(!armed){armed=1;e.target.textContent='Tap again to reset';setTimeout(()=>{armed=0;e.target.textContent='Reset ticks'},2500);return}
+  done={};save();armed=0;e.target.textContent='Reset ticks';render();toast('Fresh start')});
+render();
+}
+</script>
+</body>
+</html>
